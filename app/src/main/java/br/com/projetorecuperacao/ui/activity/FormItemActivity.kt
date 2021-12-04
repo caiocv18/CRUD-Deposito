@@ -21,7 +21,7 @@ class FormItemActivity : AppCompatActivity() {
 
         setTitle("New item")
         initializingFields()
-        configuraBotaoSalvar()
+        configSaveButton()
     }
 
     private fun initializingFields(){
@@ -39,14 +39,14 @@ class FormItemActivity : AppCompatActivity() {
     }
 
     private fun save(createdItem : Item, dao : ItemDAO){
-        dao.salva(createdItem)
+        dao.save(createdItem)
         finish()
     }
 
-    private fun configuraBotaoSalvar(){
-        val botaoSalvar = findViewById<Button>(R.id.activity_form_item_save_button)
+    private fun configSaveButton(){
+        val saveButton = findViewById<Button>(R.id.activity_form_item_save_button)
 
-        botaoSalvar.setOnClickListener(object: View.OnClickListener {
+        saveButton.setOnClickListener(object: View.OnClickListener {
             override fun onClick(view: View?){
                 var createdItem : Item = createItem()
                 save(createdItem, dao)

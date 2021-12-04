@@ -16,7 +16,6 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
-import javax.xml.transform.ErrorListener
 
 class ListItemsActivity : AppCompatActivity() {
     private var dao = ItemDAO()
@@ -27,7 +26,7 @@ class ListItemsActivity : AppCompatActivity() {
 
         setTitle("Item List")
 
-        configuraNovoAluno()
+        configNewItem()
 
         val textView = findViewById<TextView>(R.id.tv_resultado)
         val url = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
@@ -51,28 +50,28 @@ class ListItemsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        configuraLista()
+        configList()
     }
 
-    private fun configuraNovoAluno(){
-        val botaoNovoAluno = findViewById<FloatingActionButton>(R.id.activity_list_itens_fab_new_item)
+    private fun configNewItem(){
+        val newItemButton = findViewById<FloatingActionButton>(R.id.activity_list_itens_fab_new_item)
 
-        botaoNovoAluno.setOnClickListener(object: View.OnClickListener {
+        newItemButton.setOnClickListener(object: View.OnClickListener {
 
             override fun onClick(view: View){
 
-                abreFormularioActivity()
+                openFormActivity()
             }
         })
     }
 
-    private fun abreFormularioActivity(){
+    private fun openFormActivity(){
         val intent = Intent(this@ListItemsActivity, FormItemActivity::class.java )
         startActivity(intent)
     }
 
-    private fun configuraLista(){
-        val listaDeAlunos : ListView = findViewById(R.id.activity_list_items_listview)
-        listaDeAlunos.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1,dao.todos()))
+    private fun configList(){
+        val itemList : ListView = findViewById(R.id.activity_list_items_listview)
+        itemList.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1,dao.all()))
     }
 }

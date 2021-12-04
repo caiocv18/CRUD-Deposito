@@ -7,11 +7,11 @@ class ItemDAO {
         private val items = ArrayList<Item>()
     }
 
-    fun salva(item : Item) {
+    fun save(item : Item) {
         items.add(item)
     }
 
-    fun todos() : List<Item>{
+    fun all() : List<Item>{
         return ArrayList(items)
     }
 }
