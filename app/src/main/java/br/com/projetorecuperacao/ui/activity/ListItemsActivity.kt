@@ -19,7 +19,7 @@ import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 
-class ListItemsActivity : AppCompatActivity() {
+class ListItemsActivity : AppCompatActivity() , ConstantActivities{
     private var dao = ItemDAO()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,12 +62,12 @@ class ListItemsActivity : AppCompatActivity() {
 
             override fun onClick(view: View) {
 
-                openFormActivity()
+                openFormOnInsertMode()
             }
         })
     }
 
-    private fun openFormActivity() {
+    private fun openFormOnInsertMode() {
         val intent = Intent(this@ListItemsActivity, FormItemActivity::class.java)
         startActivity(intent)
     }
@@ -75,13 +75,27 @@ class ListItemsActivity : AppCompatActivity() {
     private fun configList() {
         val itemList: ListView = findViewById(R.id.activity_list_items_listview)
         val items = dao.all()
-        itemList.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, items))
+        configAdapter(itemList, items)
+        configListenerOfClickItem(itemList)
+    }
 
+    private fun configListenerOfClickItem(itemList: ListView) {
         itemList.setOnItemClickListener(AdapterView.OnItemClickListener { adapterView, view, position, id ->
-            var chosenItem = items.get(position)
-            var goToFormItemActivity = Intent(this, FormItemActivity::class.java)
-            goToFormItemActivity.putExtra("item", chosenItem)
-            startActivity(goToFormItemActivity)
+            var chosenItem = adapterView.getItemAtPosition(position) as Item
+            openFormOnEditMode(chosenItem)
         })
+    }
+
+    private fun openFormOnEditMode(chosenItem: Item) {
+        var goToFormItemActivity = Intent(this, FormItemActivity::class.java)
+        goToFormItemActivity.putExtra(ITEM_KEY, chosenItem)
+        startActivity(goToFormItemActivity)
+    }
+
+    private fun configAdapter(
+        itemList: ListView,
+        items: List<Item>
+    ) {
+        itemList.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, items))
     }
 }

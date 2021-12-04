@@ -9,7 +9,7 @@ import br.com.projetorecuperacao.R
 import br.com.projetorecuperacao.dao.ItemDAO
 import br.com.projetorecuperacao.model.Item
 
-class FormItemActivity : AppCompatActivity() {
+class FormItemActivity : AppCompatActivity(), ConstantActivities {
     private lateinit var fieldName: EditText
     private lateinit var fieldQuantity: EditText
     private lateinit var fieldPrice: EditText
@@ -19,22 +19,27 @@ class FormItemActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_form)
-
-        setTitle("New item")
         initializingFields()
         configSaveButton()
+        loadItem()
+    }
 
+    private fun loadItem() {
         val data = intent
-
-        if (data.hasExtra("item")) {
-            item = data.getSerializableExtra("item") as Item
-            fieldName.setText(item.getName())
-            fieldQuantity.setText(item.getQuantity().toString())
-            fieldPrice.setText(item.getPrice().toString())
+        if (data.hasExtra(ITEM_KEY)) {
+            setTitle("Edit item")
+            item = data.getSerializableExtra(ITEM_KEY) as Item
+            fillFields()
         } else {
+            setTitle("New item")
             item = Item()
         }
+    }
 
+    private fun fillFields() {
+        fieldName.setText(item.getName())
+        fieldQuantity.setText(item.getQuantity().toString())
+        fieldPrice.setText(item.getPrice().toString())
     }
 
     private fun initializingFields() {
@@ -58,14 +63,18 @@ class FormItemActivity : AppCompatActivity() {
 
         saveButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                fillItem()
-                if (item.hasValidId()) {
-                    dao.edit(item)
-                }else{
-                    dao.save(item)
-                }
-                finish()
+                finishForm()
             }
         })
+    }
+
+    private fun finishForm() {
+        fillItem()
+        if (item.hasValidId()) {
+            dao.edit(item)
+        } else {
+            dao.save(item)
+        }
+        finish()
     }
 }

@@ -11,20 +11,28 @@ class ItemDAO {
     fun save(item: Item) {
         item.setId(idInterator)
         items.add(item)
+        updateId()
+    }
+
+    private fun updateId() {
         idInterator++
     }
 
     fun edit(item: Item) {
-        var itemExists: Item? = null
-        for (i in items) {
-            if (i.getId() === item.getId()) {
-                itemExists = i
-            }
-        }
+        var itemExists: Item? = searchItemById(item)
         if (itemExists != null) {
             val posicaoDoAluno: Int = items.indexOf(itemExists)
             items.set(posicaoDoAluno, item)
         }
+    }
+
+    private fun searchItemById(item: Item): Item? {
+        for (i in items) {
+            if (i.getId() === item.getId()) {
+                return i
+            }
+        }
+        return null
     }
 
     fun all(): List<Item> {
