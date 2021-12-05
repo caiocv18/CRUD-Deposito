@@ -1,5 +1,6 @@
 package br.com.projetorecuperacao.model
 
+//Classe para auxiliar na obtenção de informações através da API
 class Currency {
 
     data class Data(
@@ -28,9 +29,4 @@ class Currency {
             create_date
         )
     )
-
-    companion object{
-        var currentCurrency : Double? = null
-    }
-
 }

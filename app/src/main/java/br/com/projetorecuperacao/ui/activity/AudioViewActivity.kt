@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import br.com.projetorecuperacao.R
 
+//Classe activity para visualização do conteúdo de áudio multimidia
 class AudioViewActivity : AppCompatActivity() {
     var mediaPlayer: MediaPlayer? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,6 +17,7 @@ class AudioViewActivity : AppCompatActivity() {
         stopAudio()
     }
 
+    //Método para reproduzir o áudio
     fun playAudio(){
         val button : Button = findViewById(R.id.button_play)
         button.setOnClickListener{
@@ -24,6 +26,7 @@ class AudioViewActivity : AppCompatActivity() {
         }
     }
 
+    //Método para parar o áudio
     fun stopAudio(){
         val button : Button = findViewById(R.id.button_stop)
         button.setOnClickListener{

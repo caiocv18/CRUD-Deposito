@@ -9,12 +9,14 @@ import br.com.projetorecuperacao.R
 class VideoViewActivity : AppCompatActivity() {
     private var mediaController: MediaController? = null
 
+    //Método responsável por criar a activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_view)
         runVideo()
     }
 
+    //Método responsável por reproduzir o vídeo
     fun runVideo(){
         val videoView : VideoView = findViewById(R.id.activity_video_view)
         videoView.setVideoPath("https://media.istockphoto.com/videos/falling-dollar-banknotes-in-4k-loopable-video-id826661764")

@@ -1,5 +1,6 @@
 package br.com.projetorecuperacao.model
 
+//Classe utilizada para auxiliar na obtenção dos dados fornecidos pela API
 class USDBRL(
     var code: String,
     var codein: String,

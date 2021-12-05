@@ -56,8 +56,6 @@ class ItemListAdapter(context: Context) : BaseAdapter() {
                 var currency = gson?.fromJson(response, Currency.Data::class.java)
                 var priceConverted = (currency.USDBRL.bid.toDouble() * item.getPrice())
                 price.setText("R$${priceConverted}")
-                Currency.currentCurrency = currency.USDBRL.bid.toDouble()
-                Log.i("currentCurrency", "requestCurrencyWithAPI: ${Currency.currentCurrency}")
             },
             Response.ErrorListener {
                 price.setText("Request to 'API de Cotações de moedas' didn't work!")
