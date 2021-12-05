@@ -45,5 +45,4 @@ class ItemDAO {
             items.remove(foundItem)
         }
     }
-
 }

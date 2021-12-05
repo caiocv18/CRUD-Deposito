@@ -29,21 +29,36 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
         setContentView(R.layout.activity_list_items)
         setTitle("Item List")
         configNewItem()
+        configShareButton()
 
+        val videoButton =
+            findViewById<FloatingActionButton>(R.id.activity_list_itens_fab_video)
+
+        videoButton.setOnClickListener(object : View.OnClickListener {
+
+            override fun onClick(view: View) {
+
+                val intent = Intent(this@ListItemsActivity, VideoView::class.java)
+                startActivity(intent)
+            }
+        })
+
+        configList()
+        requestCurrencyWithAPI()
+    }
+
+    private fun configShareButton() {
         val buttonShare = findViewById<FloatingActionButton>(R.id.activity_list_itens_fab_share)
-        buttonShare.setOnClickListener(){
+        buttonShare.setOnClickListener() {
 
 
-            val intent : Intent = Intent().apply {
+            val intent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, dao.all().toString())
                 type = "text/plain"
             }
             startActivity(intent)
         }
-
-        configList()
-        requestCurrencyWithAPI()
     }
 
     override fun onCreateContextMenu(

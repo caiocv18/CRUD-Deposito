@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjetoRecuperacao">
         <activity
+            android:name=".ui.activity.VideoView"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.VideoViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.ListItemsActivity"
             android:exported="true">
             <intent-filter>
@@ -20,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.FormItemActivity"/>
+        <activity android:name=".ui.activity.FormItemActivity" />
     </application>
 
 </manifest>
