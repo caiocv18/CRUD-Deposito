@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
@@ -19,16 +20,19 @@ import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 
-class ListItemsActivity : AppCompatActivity() , ConstantActivities{
+class ListItemsActivity : AppCompatActivity(), ConstantActivities {
+    private lateinit var adapter: ArrayAdapter<Item>
     private var dao = ItemDAO()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_list_items)
         setTitle("Item List")
         configNewItem()
+        requestCurrencyWithAPI()
+    }
 
+    private fun requestCurrencyWithAPI() {
         val textView = findViewById<TextView>(R.id.tv_resultado)
         val url = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
 
@@ -45,7 +49,6 @@ class ListItemsActivity : AppCompatActivity() , ConstantActivities{
             Response.ErrorListener { textView.text = "That didn't work!" })
 
         queue.add(stringRequest)
-
     }
 
     override fun onResume() {
@@ -77,6 +80,12 @@ class ListItemsActivity : AppCompatActivity() , ConstantActivities{
         val items = dao.all()
         configAdapter(itemList, items)
         configListenerOfClickItem(itemList)
+        itemList.setOnItemLongClickListener(OnItemLongClickListener { adapterView, view, position, id ->
+            val chosenItem: Item = adapterView.getItemAtPosition(position) as Item
+            dao.delete(chosenItem)
+            adapter.remove(chosenItem)
+            true
+        })
     }
 
     private fun configListenerOfClickItem(itemList: ListView) {
@@ -92,10 +101,8 @@ class ListItemsActivity : AppCompatActivity() , ConstantActivities{
         startActivity(goToFormItemActivity)
     }
 
-    private fun configAdapter(
-        itemList: ListView,
-        items: List<Item>
-    ) {
-        itemList.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, items))
+    private fun configAdapter(itemList: ListView, items: List<Item>) {
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
+        itemList.setAdapter(adapter)
     }
 }

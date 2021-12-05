@@ -38,4 +38,11 @@ class ItemDAO {
     fun all(): List<Item> {
         return ArrayList(items)
     }
+
+    fun delete(item: Item) {
+        var foundItem = searchItemById(item)
+        if(foundItem != null){
+            items.remove(foundItem)
+        }
+    }
 }
