@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RecuperationProject</string>
+    <string name="string_form_item_name">Name</string>
+    <string name="string_form_item_quantity">Quantity</string>
+    <string name="string_form_item_price">Price in Dollars (USD)</string>
+    <string name="string_form_save_button">Save</string>
+</resources>

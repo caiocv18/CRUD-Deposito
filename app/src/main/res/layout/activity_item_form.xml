@@ -9,7 +9,7 @@
         android:id="@+id/activity_form_item_name"
         android:layout_width="match_parent"
         android:layout_margin="8dp"
-        android:hint="Name"
+        android:hint="@string/string_form_item_name"
         android:inputType="textCapWords"
         android:layout_height="wrap_content">
     </EditText>
@@ -18,7 +18,7 @@
         android:id="@+id/activity_form_item_quantity"
         android:layout_width="match_parent"
         android:layout_margin="8dp"
-        android:hint="Quantity"
+        android:hint="@string/string_form_item_quantity"
         android:inputType="number"
         android:layout_height="wrap_content">
     </EditText>
@@ -27,7 +27,7 @@
         android:id="@+id/activity_form_item_price"
         android:layout_width="match_parent"
         android:layout_margin="8dp"
-        android:hint="Price"
+        android:hint="@string/string_form_item_price"
         android:inputType="numberDecimal"
         android:layout_height="wrap_content">
     </EditText>
@@ -36,7 +36,7 @@
         android:id="@+id/activity_form_item_save_button"
         android:layout_width="match_parent"
         android:layout_margin="8dp"
-        android:text="Save"
+        android:text="@string/string_form_save_button"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
