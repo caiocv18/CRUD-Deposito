@@ -7,11 +7,8 @@ import android.util.Log
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
+import android.widget.*
 import android.widget.AdapterView.OnItemLongClickListener
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.TextView
 import br.com.projetorecuperacao.R
 import br.com.projetorecuperacao.dao.ItemDAO
 import br.com.projetorecuperacao.model.Currency
@@ -32,6 +29,19 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
         setContentView(R.layout.activity_list_items)
         setTitle("Item List")
         configNewItem()
+
+        val buttonShare = findViewById<FloatingActionButton>(R.id.activity_list_itens_fab_share)
+        buttonShare.setOnClickListener(){
+
+
+            val intent : Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, dao.all().toString())
+                type = "text/plain"
+            }
+            startActivity(intent)
+        }
+
         configList()
         requestCurrencyWithAPI()
     }
