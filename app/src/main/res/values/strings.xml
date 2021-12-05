@@ -5,5 +5,8 @@
     <string name="string_form_item_price">Preço em dólar (USD)</string>
     <string name="string_form_save_button">Salvar</string>
     <string name="string_context_menu_delete">Remover</string>
+    <string name="string_form_button_record">Gravar</string>
+    <string name="string_form_button_clean">Limpar</string>
+    <string name="string_form_button_recover">Recuperar</string>
 
 </resources>

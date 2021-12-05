@@ -28,4 +28,9 @@ class Currency {
             create_date
         )
     )
+
+    companion object{
+        var currentCurrency : Double? = null
+    }
+
 }

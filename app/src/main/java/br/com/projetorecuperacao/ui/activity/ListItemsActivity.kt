@@ -3,6 +3,7 @@ package br.com.projetorecuperacao.ui.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
@@ -56,9 +57,12 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
                 textView.text = "Response is: ${response}"
                 var gson = Gson()
                 var currency = gson?.fromJson(response, Currency.Data::class.java)
-                textView.text = currency.USDBRL.low
+                textView.text = currency.USDBRL.bid
+                Currency.currentCurrency = currency.USDBRL.bid.toDouble()
+                Log.i("currentCurrency", "requestCurrencyWithAPI: ${Currency.currentCurrency}")
             },
-            Response.ErrorListener { textView.text = "That didn't work!" })
+            Response.ErrorListener { textView.text = "Request to 'API de Cotações de moedas' didn't work!" })
+
 
         queue.add(stringRequest)
     }

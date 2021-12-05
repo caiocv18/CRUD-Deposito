@@ -6,4 +6,7 @@
     <string name="string_form_item_price">Price in Dollars (USD)</string>
     <string name="string_form_save_button">Save</string>
     <string name="string_context_menu_delete">Delete</string>
+    <string name="string_form_button_record">Record</string>
+    <string name="string_form_button_clean">Clean</string>
+    <string name="string_form_button_recover">Recover</string>
 </resources>

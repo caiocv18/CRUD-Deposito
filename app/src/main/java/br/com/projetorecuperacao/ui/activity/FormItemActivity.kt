@@ -7,7 +7,14 @@ import br.com.projetorecuperacao.dao.ItemDAO
 import br.com.projetorecuperacao.model.Item
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.TextView
 import br.com.projetorecuperacao.R
+import br.com.projetorecuperacao.services.SharedPreference
+import android.widget.Toast
+
+import android.content.SharedPreferences
+import android.view.View
 
 
 class FormItemActivity : AppCompatActivity(), ConstantActivities {
@@ -19,9 +26,56 @@ class FormItemActivity : AppCompatActivity(), ConstantActivities {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPreference  = SharedPreference(this)
         setContentView(R.layout.activity_item_form)
         initializingFields()
         loadItem()
+
+        val (buttonRecord, buttonClean, buttonRecover) = initializingButtons()
+
+        record(buttonRecord, sharedPreference)
+
+        clean(buttonClean)
+
+        recover(buttonRecover, sharedPreference)
+
+    }
+
+    private fun recover(
+        buttonRecover: Button,
+        sharedPreference: SharedPreference
+    ) {
+        buttonRecover.setOnClickListener {
+            fieldName.setText(sharedPreference.getValue("name"))
+            fieldQuantity.setText(sharedPreference.getValue("quantity").toString())
+            fieldPrice.setText(sharedPreference.getValue("price"))
+        }
+    }
+
+    private fun clean(
+        buttonClean: Button,
+    ) {
+        buttonClean.setOnClickListener {
+            fillFields()
+        }
+    }
+
+    private fun record(
+        buttonRecord: Button,
+        sharedPreference: SharedPreference
+    ) {
+        buttonRecord.setOnClickListener {
+            sharedPreference.save("name", fieldName.text.toString())
+            sharedPreference.save("quantity", fieldQuantity.text.toString())
+            sharedPreference.save("price", fieldPrice.text.toString())
+        }
+    }
+
+    private fun initializingButtons(): Triple<Button, Button, Button> {
+        val buttonRecord = findViewById<Button>(R.id.activity_form_button_record)
+        val buttonClean = findViewById<Button>(R.id.activity_form_button_clean)
+        val buttonRecover = findViewById<Button>(R.id.activity_form_button_recover)
+        return Triple(buttonRecord, buttonClean, buttonRecover)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

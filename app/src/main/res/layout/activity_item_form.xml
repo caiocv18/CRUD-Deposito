@@ -32,4 +32,22 @@
         android:layout_height="wrap_content">
     </EditText>
 
+    <Button
+        android:id="@+id/activity_form_button_record"
+        android:text="@string/string_form_button_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/activity_form_button_clean"
+        android:text="@string/string_form_button_clean"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/activity_form_button_recover"
+        android:text="@string/string_form_button_recover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>
