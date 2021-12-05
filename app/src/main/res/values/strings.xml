@@ -8,5 +8,7 @@
     <string name="string_form_button_record">Gravar</string>
     <string name="string_form_button_clean">Limpar</string>
     <string name="string_form_button_recover">Recuperar</string>
+    <string name="string_button_view_audio_play">Tocar</string>
+    <string name="string_button_view_audio_stop">Parar</string>
 
 </resources>

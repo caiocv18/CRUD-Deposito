@@ -6,7 +6,7 @@ import android.widget.MediaController
 import android.widget.VideoView
 import br.com.projetorecuperacao.R
 
-class VideoView : AppCompatActivity() {
+class VideoViewActivity : AppCompatActivity() {
     private var mediaController: MediaController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

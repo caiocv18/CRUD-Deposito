@@ -40,6 +40,17 @@
         android:clickable="true"
         android:src="@drawable/ic_action_video"
         android:focusable="true"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/activity_list_itens_fab_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="206dp"
+        android:clickable="true"
+        android:src="@drawable/ic_action_audio"
+        android:focusable="true"/>
 
     <ListView
         android:id="@+id/activity_list_items_listview"

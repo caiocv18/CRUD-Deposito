@@ -9,4 +9,6 @@
     <string name="string_form_button_record">Record</string>
     <string name="string_form_button_clean">Clean</string>
     <string name="string_form_button_recover">Recover</string>
+    <string name="string_button_view_audio_play">Play</string>
+    <string name="string_button_view_audio_stop">Stop</string>
 </resources>

@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjetoRecuperacao">
         <activity
-            android:name=".ui.activity.VideoView"
+            android:name=".ui.activity.AudioViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.VideoViewActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.VideoViewActivity"

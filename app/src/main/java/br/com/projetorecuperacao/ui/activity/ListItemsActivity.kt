@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextMenu
-import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import android.widget.AdapterView.OnItemLongClickListener
 import br.com.projetorecuperacao.R
 import br.com.projetorecuperacao.dao.ItemDAO
 import br.com.projetorecuperacao.model.Currency
@@ -30,7 +28,28 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
         setTitle("Item List")
         configNewItem()
         configShareButton()
+        configVideoButton()
 
+        val audioButton =
+            findViewById<FloatingActionButton>(R.id.activity_list_itens_fab_audio)
+
+        audioButton.setOnClickListener(object : View.OnClickListener {
+
+            override fun onClick(view: View) {
+
+                val intent = Intent(this@ListItemsActivity, AudioViewActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
+
+
+
+        configList()
+        requestCurrencyWithAPI()
+    }
+
+    private fun configVideoButton() {
         val videoButton =
             findViewById<FloatingActionButton>(R.id.activity_list_itens_fab_video)
 
@@ -38,13 +57,10 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
 
             override fun onClick(view: View) {
 
-                val intent = Intent(this@ListItemsActivity, VideoView::class.java)
+                val intent = Intent(this@ListItemsActivity, VideoViewActivity::class.java)
                 startActivity(intent)
             }
         })
-
-        configList()
-        requestCurrencyWithAPI()
     }
 
     private fun configShareButton() {
