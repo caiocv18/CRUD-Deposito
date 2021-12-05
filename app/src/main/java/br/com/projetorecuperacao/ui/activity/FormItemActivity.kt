@@ -1,13 +1,14 @@
 package br.com.projetorecuperacao.ui.activity
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import br.com.projetorecuperacao.R
 import br.com.projetorecuperacao.dao.ItemDAO
 import br.com.projetorecuperacao.model.Item
+import android.view.Menu
+import android.view.MenuItem
+import br.com.projetorecuperacao.R
+
 
 class FormItemActivity : AppCompatActivity(), ConstantActivities {
     private lateinit var fieldName: EditText
@@ -20,8 +21,21 @@ class FormItemActivity : AppCompatActivity(), ConstantActivities {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_form)
         initializingFields()
-        configSaveButton()
         loadItem()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater
+            .inflate(R.menu.activity_form_item_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemId: Int = item.getItemId()
+        if (itemId == R.id.activity_form_menu_item_save) {
+            finishForm()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun loadItem() {
@@ -56,16 +70,6 @@ class FormItemActivity : AppCompatActivity(), ConstantActivities {
         item.setName(name)
         item.setQuantity(quantity)
         item.setPrice(price)
-    }
-
-    private fun configSaveButton() {
-        val saveButton = findViewById<Button>(R.id.activity_form_item_save_button)
-
-        saveButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                finishForm()
-            }
-        })
     }
 
     private fun finishForm() {

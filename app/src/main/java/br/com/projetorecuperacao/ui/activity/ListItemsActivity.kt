@@ -44,16 +44,6 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
         menuInflater.inflate(R.menu.activity_list_items_menu,menu)
     }
 
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        var itemId = item.itemId
-        if(itemId == R.id.acitivity_context_menu_delete){
-            var menuInfo : AdapterView.AdapterContextMenuInfo = item.getMenuInfo() as AdapterView.AdapterContextMenuInfo
-            var chosenItem = adapter.getItem(menuInfo.position) as Item
-            delete(chosenItem)
-        }
-        return super.onContextItemSelected(item)
-    }
-
     private fun requestCurrencyWithAPI() {
         val textView = findViewById<TextView>(R.id.tv_resultado)
         val url = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
