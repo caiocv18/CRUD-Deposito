@@ -4,8 +4,6 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -14,14 +12,10 @@ import br.com.projetorecuperacao.model.Item
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import android.widget.TextView
 import br.com.projetorecuperacao.R
 import br.com.projetorecuperacao.services.SharedPreference
-import android.widget.Toast
 
-import android.content.SharedPreferences
 import android.graphics.Color
-import android.view.View
 
 
 class FormItemActivity : AppCompatActivity(), ConstantActivities {
@@ -57,7 +51,7 @@ class FormItemActivity : AppCompatActivity(), ConstantActivities {
 
     }
 
-    private fun popLocalNotification() {
+    private fun popLocalAddItemNotification() {
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val pendingIntent =
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
@@ -70,6 +64,26 @@ class FormItemActivity : AppCompatActivity(), ConstantActivities {
         build = Notification.Builder(this)
             .setContentTitle("New Item on List")
             .setContentText("Item saved successfully. Click here to add more items")
+            .setSmallIcon(R.drawable.ic_new_item_added)
+            .setChannelId(ChannelID)
+            .setContentIntent(pendingIntent)
+
+        notificationManager.notify(12345, build.build())
+    }
+
+    private fun popLocalUpdateItemNotification() {
+        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        notificationChannel =
+            NotificationChannel(ChannelID, desc, NotificationManager.IMPORTANCE_HIGH)
+        notificationChannel.lightColor = Color.BLUE
+        notificationChannel.enableVibration(true)
+        notificationManager.createNotificationChannel(notificationChannel)
+
+        build = Notification.Builder(this)
+            .setContentTitle("Updated Item on List")
+            .setContentText("Updated saved successfully. Click here to add more items")
             .setSmallIcon(R.drawable.ic_new_item_added)
             .setChannelId(ChannelID)
             .setContentIntent(pendingIntent)
@@ -166,10 +180,11 @@ class FormItemActivity : AppCompatActivity(), ConstantActivities {
         fillItem()
         if (item.hasValidId()) {
             dao.edit(item)
+            popLocalUpdateItemNotification()
         } else {
             dao.save(item)
+            popLocalAddItemNotification()
         }
         finish()
-        popLocalNotification()
     }
 }

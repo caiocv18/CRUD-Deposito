@@ -1,26 +1,33 @@
 package br.com.projetorecuperacao.ui.activity
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextMenu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import br.com.projetorecuperacao.R
 import br.com.projetorecuperacao.dao.ItemDAO
-import br.com.projetorecuperacao.model.Currency
 import br.com.projetorecuperacao.model.Item
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
+import br.com.projetorecuperacao.ui.adapter.ItemListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.gson.Gson
+
 
 class ListItemsActivity : AppCompatActivity(), ConstantActivities {
-    private lateinit var adapter: ArrayAdapter<Item>
+    lateinit var notificationManager : NotificationManager
+    lateinit var notificationChannel: NotificationChannel
+    lateinit var build : Notification.Builder
+    private val ChannelID = "RecuperationProject"
+    private val desc = "Notifications"
+
     private var dao = ItemDAO()
+    private lateinit var adapter: ItemListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +38,6 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
         configVideoButton()
         configAudioButton()
         configList()
-        requestCurrencyWithAPI()
     }
 
     private fun configAudioButton() {
@@ -82,29 +88,7 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        menuInflater.inflate(R.menu.activity_list_items_menu,menu)
-    }
-
-    private fun requestCurrencyWithAPI() {
-        val textView = findViewById<TextView>(R.id.tv_resultado)
-        val url = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
-
-        val queue = Volley.newRequestQueue(this)
-
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            Response.Listener<String> { response ->
-                textView.text = "Response is: ${response}"
-                var gson = Gson()
-                var currency = gson?.fromJson(response, Currency.Data::class.java)
-                textView.text = currency.USDBRL.bid
-                Currency.currentCurrency = currency.USDBRL.bid.toDouble()
-                Log.i("currentCurrency", "requestCurrencyWithAPI: ${Currency.currentCurrency}")
-            },
-            Response.ErrorListener { textView.text = "Request to 'API de Cotações de moedas' didn't work!" })
-
-
-        queue.add(stringRequest)
+        menuInflater.inflate(R.menu.activity_list_items_menu, menu)
     }
 
     override fun onResume() {
@@ -113,8 +97,7 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
     }
 
     private fun updateItens() {
-        adapter.clear()
-        adapter.addAll(dao.all())
+        adapter.update(dao.all())
     }
 
     private fun configNewItem() {
@@ -146,6 +129,7 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
     private fun delete(item: Item) {
         dao.delete(item)
         adapter.remove(item)
+        popLocalDeletedItemNotification()
     }
 
     private fun configListenerOfClickItem(itemList: ListView) {
@@ -161,8 +145,43 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
         startActivity(goToFormItemActivity)
     }
 
-    private fun configAdapter(itemList: ListView) {
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1)
-        itemList.setAdapter(adapter)
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val itemId: Int = item.getItemId()
+        if (itemId == R.id.acitivity_context_menu_delete) {
+            val menuInfo: AdapterView.AdapterContextMenuInfo =
+                item.getMenuInfo() as AdapterView.AdapterContextMenuInfo
+            val chosenItem: Item? = adapter.getItem(menuInfo.position)
+            if (chosenItem != null) {
+                delete(chosenItem)
+            }
+        }
+        return super.onContextItemSelected(item)
+    }
+
+    private fun configAdapter(itemsList: ListView) {
+        adapter = ItemListAdapter(this@ListItemsActivity)
+        itemsList.setAdapter(adapter)
+    }
+
+
+    fun popLocalDeletedItemNotification() {
+        val intent = Intent(this,FormItemActivity::class.java)
+        notificationManager = getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        notificationChannel =
+            NotificationChannel(ChannelID, desc, NotificationManager.IMPORTANCE_HIGH)
+        notificationChannel.lightColor = Color.BLUE
+        notificationChannel.enableVibration(true)
+        notificationManager.createNotificationChannel(notificationChannel)
+
+        build = Notification.Builder(this)
+            .setContentTitle("Deleted Item on List")
+            .setContentText("See your list. Click here to add more items")
+            .setSmallIcon(R.drawable.ic_new_item_added)
+            .setChannelId(ChannelID)
+            .setContentIntent(pendingIntent)
+
+        notificationManager.notify(12345, build.build())
     }
 }
