@@ -4,5 +4,6 @@
     <string name="string_form_item_quantity">Quantidade</string>
     <string name="string_form_item_price">Preço em dólar (USD)</string>
     <string name="string_form_save_button">Salvar</string>
+    <string name="string_context_menu_delete">Remover</string>
 
 </resources>

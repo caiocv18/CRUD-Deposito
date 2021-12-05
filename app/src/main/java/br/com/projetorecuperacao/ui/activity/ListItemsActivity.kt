@@ -3,6 +3,8 @@ package br.com.projetorecuperacao.ui.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemLongClickListener
@@ -29,7 +31,27 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
         setContentView(R.layout.activity_list_items)
         setTitle("Item List")
         configNewItem()
+        configList()
         requestCurrencyWithAPI()
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menuInflater.inflate(R.menu.activity_list_items_menu,menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        var itemId = item.itemId
+        if(itemId == R.id.acitivity_context_menu_delete){
+            var menuInfo : AdapterView.AdapterContextMenuInfo = item.getMenuInfo() as AdapterView.AdapterContextMenuInfo
+            var chosenItem = adapter.getItem(menuInfo.position) as Item
+            delete(chosenItem)
+        }
+        return super.onContextItemSelected(item)
     }
 
     private fun requestCurrencyWithAPI() {
@@ -53,8 +75,12 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
 
     override fun onResume() {
         super.onResume()
+        updateItens()
+    }
 
-        configList()
+    private fun updateItens() {
+        adapter.clear()
+        adapter.addAll(dao.all())
     }
 
     private fun configNewItem() {
@@ -77,15 +103,15 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
 
     private fun configList() {
         val itemList: ListView = findViewById(R.id.activity_list_items_listview)
-        val items = dao.all()
-        configAdapter(itemList, items)
+        configAdapter(itemList)
         configListenerOfClickItem(itemList)
-        itemList.setOnItemLongClickListener(OnItemLongClickListener { adapterView, view, position, id ->
-            val chosenItem: Item = adapterView.getItemAtPosition(position) as Item
-            dao.delete(chosenItem)
-            adapter.remove(chosenItem)
-            true
-        })
+        registerForContextMenu(itemList)
+    }
+
+
+    private fun delete(item: Item) {
+        dao.delete(item)
+        adapter.remove(item)
     }
 
     private fun configListenerOfClickItem(itemList: ListView) {
@@ -101,8 +127,8 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
         startActivity(goToFormItemActivity)
     }
 
-    private fun configAdapter(itemList: ListView, items: List<Item>) {
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
+    private fun configAdapter(itemList: ListView) {
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1)
         itemList.setAdapter(adapter)
     }
 }
