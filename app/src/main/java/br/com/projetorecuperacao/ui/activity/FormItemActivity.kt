@@ -1,5 +1,11 @@
 package br.com.projetorecuperacao.ui.activity
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -14,10 +20,17 @@ import br.com.projetorecuperacao.services.SharedPreference
 import android.widget.Toast
 
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.view.View
 
 
 class FormItemActivity : AppCompatActivity(), ConstantActivities {
+    lateinit var notificationManager : NotificationManager
+    lateinit var notificationChannel: NotificationChannel
+    lateinit var build : Notification.Builder
+    private val ChannelID = "RecuperationProject"
+    private val desc = "Notifications"
+
     private lateinit var fieldName: EditText
     private lateinit var fieldQuantity: EditText
     private lateinit var fieldPrice: EditText
@@ -26,6 +39,9 @@ class FormItemActivity : AppCompatActivity(), ConstantActivities {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
         val sharedPreference  = SharedPreference(this)
         setContentView(R.layout.activity_item_form)
         initializingFields()
@@ -39,6 +55,26 @@ class FormItemActivity : AppCompatActivity(), ConstantActivities {
 
         recover(buttonRecover, sharedPreference)
 
+    }
+
+    private fun popLocalNotification() {
+        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        notificationChannel =
+            NotificationChannel(ChannelID, desc, NotificationManager.IMPORTANCE_HIGH)
+        notificationChannel.lightColor = Color.BLUE
+        notificationChannel.enableVibration(true)
+        notificationManager.createNotificationChannel(notificationChannel)
+
+        build = Notification.Builder(this)
+            .setContentTitle("New Item on List")
+            .setContentText("Item saved successfully. Click here to add more items")
+            .setSmallIcon(R.drawable.ic_new_item_added)
+            .setChannelId(ChannelID)
+            .setContentIntent(pendingIntent)
+
+        notificationManager.notify(12345, build.build())
     }
 
     private fun recover(
@@ -134,5 +170,6 @@ class FormItemActivity : AppCompatActivity(), ConstantActivities {
             dao.save(item)
         }
         finish()
+        popLocalNotification()
     }
 }

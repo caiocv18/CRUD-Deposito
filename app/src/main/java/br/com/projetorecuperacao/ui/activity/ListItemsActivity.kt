@@ -29,7 +29,12 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
         configNewItem()
         configShareButton()
         configVideoButton()
+        configAudioButton()
+        configList()
+        requestCurrencyWithAPI()
+    }
 
+    private fun configAudioButton() {
         val audioButton =
             findViewById<FloatingActionButton>(R.id.activity_list_itens_fab_audio)
 
@@ -41,12 +46,6 @@ class ListItemsActivity : AppCompatActivity(), ConstantActivities {
                 startActivity(intent)
             }
         })
-
-
-
-
-        configList()
-        requestCurrencyWithAPI()
     }
 
     private fun configVideoButton() {
